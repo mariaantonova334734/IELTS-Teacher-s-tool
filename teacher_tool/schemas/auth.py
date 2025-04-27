@@ -18,7 +18,6 @@ class LoginUserModel(pydantic.BaseModel):
     username: str = pydantic.Field(default='test_mail@gmail.com')
     password: str = pydantic.Field()
 
-
 class UserResponseModel(pydantic.BaseModel):
     id: int = pydantic.Field(default=1)
     email: str = pydantic.Field(default='test_mail@gmail.com')
