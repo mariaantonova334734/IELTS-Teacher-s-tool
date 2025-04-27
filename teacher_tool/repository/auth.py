@@ -38,13 +38,10 @@ class TeacherRepository(AbstractRepository):
 
         return teacher
 
-    # async def update(self, idx: int, data: dict) -> None:
-    #     stmt = sa.update(Teacher).values(**data)
-    #     await self.session.execute(stmt)
     async def update(self, idx: int, data: dict) -> None:
         stmt = (
             sa.update(Teacher)
-                .where(Teacher.id == idx)  # 👈 добавлено условие
+                .where(Teacher.id == idx)
                 .values(**data)
         )
         await self.session.execute(stmt)
