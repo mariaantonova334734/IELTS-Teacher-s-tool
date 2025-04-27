@@ -28,20 +28,9 @@ export default function UpdateTeacherPage() {
 			}
 			if(validated) {
 				await teacherService.updateProfile({
-// 					login: form.getFieldValue('login'),
 					fio: form.getFieldValue('fio'),
 					teacherId
 				});
-//                 const response = await teacherService.updateProfile({
-//                     login: form.getFieldValue('login'),
-//                     fio: form.getFieldValue('fio'),
-//                     teacherId
-//             });
-//
-//                 // Сохраняем новый токен, если он пришёл
-//                 if (response?.access_token) {
-//                     localStorage.setItem('access_token', response.access_token);
-//                 }
 
 				
 				message.open({
