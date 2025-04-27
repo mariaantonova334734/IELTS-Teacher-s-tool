@@ -20,7 +20,7 @@ export interface UpdateWordByUnitRequest {
     translation: string;
 
     /**
-     * Изучение заверщено?
+     * Изучение завершено?
      */
     completed: boolean;
 
