@@ -13,10 +13,6 @@ class StudentForListingResponse(pydantic.BaseModel):
 class UnitForListingResponse(pydantic.BaseModel):
     id: int
     name: str
-    gaaginx_idx: Optional[float] = None
-    diversity_idx: Optional[float] = None
-
-
 
 class WordForListingResponse(pydantic.BaseModel):
     id: int
@@ -36,13 +32,11 @@ class UpdateUnitWordRequest(pydantic.BaseModel):
     title: Optional[str] = None
     translation: Optional[str] = None
     completed: Optional[bool] = None
-    # synonyms: Optional[list[str]] = None
     topic: Optional[str] = None
 
 class CreateStudentRequest(pydantic.BaseModel):
     group: str
     fio: str
-    # teacher_login: Optional[str] = None
     teacher_id: Optional[int] = None
 
 class UpdateStudentRequest(pydantic.BaseModel):
@@ -52,7 +46,6 @@ class UpdateStudentRequest(pydantic.BaseModel):
 
 
 class UpdateTeacherRequest(pydantic.BaseModel):
-    # login: str
     fio: str
 
 class UpdateUnitRequest(pydantic.BaseModel):
