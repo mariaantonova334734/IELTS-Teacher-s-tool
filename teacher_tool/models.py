@@ -14,8 +14,6 @@ class Student(Base):
     is_active: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=True)
     units = orm.relationship("Unit", back_populates="student")
     teacher_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey('teacher.id'), nullable=True)
-
-
     teacher = orm.relationship("Teacher", back_populates="students")
 
 class Teacher(Base):
@@ -29,9 +27,6 @@ class Teacher(Base):
     login: orm.Mapped[str] = orm.mapped_column(sa.String)
     email: orm.Mapped[str] = orm.mapped_column(sa.String)
     password: orm.Mapped[str] = orm.mapped_column(sa.String)
-
-
-
     students = orm.relationship("Student", back_populates="teacher")
 
 class Unit(Base):
@@ -42,9 +37,6 @@ class Unit(Base):
     student_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey('student.id'))
     student = orm.relationship("Student", back_populates="units")
     words = orm.relationship("Word", back_populates="unit")
-    gaaging_idx: orm.Mapped[float] = orm.mapped_column(sa.Float, nullable=True)
-    diversity_idx: orm.Mapped[float] = orm.mapped_column(sa.Float, nullable=True)
-
 class Word(Base):
     __tablename__ = 'word'
 
@@ -64,13 +56,3 @@ class WordSynonyms(Base):
     title: orm.Mapped[str] = orm.mapped_column(sa.String)
     word_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey('word.id'))
     word = orm.relationship("Word", back_populates="word_synonyms")
-
-
-# class TeacherStudent(Base):
-#     __tablename__ = 'teacher_student'
-#
-#     teacher_id: orm.Mapped[int] = orm.mapped_column(sa.ForeignKey('teacher.id'), primary_key=True)
-#     student_id: orm.Mapped[int] = orm.mapped_column(sa.ForeignKey('student.id'), primary_key=True)
-#
-#     teacher = orm.relationship("Teacher", back_populates="students")
-#     student = orm.relationship("Student", back_populates="teachers")
