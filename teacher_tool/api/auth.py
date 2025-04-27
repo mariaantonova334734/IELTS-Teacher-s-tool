@@ -27,33 +27,12 @@ async def register(
         created_teacher_id = await repository.create(body)
         teacher = await repository.get(created_teacher_id)
 
-    # verification_token = utils.Token.encode_verification_token(teacher.login)
-    # await utils.send_mail(body.email, verification_token)
-
     return auth_schemas.UserResponseModel(
         login=teacher.login,
         email=teacher.email,
         id=teacher.id
     )
 
-# @auth_router.post(
-#     '/login',
-#     status_code=status.HTTP_200_OK,
-#     response_model=auth_schemas.AccessTokenModel
-# )
-# async def login(
-#     body: OAuth2PasswordRequestForm = fastapi.Depends(),
-#     session: AsyncSession = fastapi.Depends(get_async_session)
-# ) -> auth_schemas.AccessTokenModel:
-#     async_unit_of_work = AsyncSqlAlchemyUnitOfWork(session)
-#
-#     async with async_unit_of_work:
-#         repository = auth_repo.LoginRepository(session)
-#         logged_user = await repository.create(body)
-#
-#     access_token = utils.Token.encode_auth_token(logged_user.login)
-#
-#     return auth_schemas.AccessTokenModel(access_token=access_token)
 @auth_router.post(
     '/login',
     status_code=status.HTTP_200_OK,
@@ -75,34 +54,3 @@ async def login(
         access_token=access_token,
         id=logged_user.id
     )
-
-
-
-
-# @auth_router.get('/verify', status_code=status.HTTP_200_OK)
-# async def verify(
-#     access_token: str = fastapi.Query(...),
-#     session: AsyncSession = fastapi.Depends(get_async_session)
-# ):
-#     if not access_token:
-#         raise DecodeError
-#
-#     try:
-#         decoded_token = utils.Token.decode_auth_token(access_token)
-#     except (
-#             jwt.DecodeError,
-#             jwt.ExpiredSignatureError,
-#             jwt.InvalidSignatureError,
-#             jwt.InvalidTokenError,
-#             jwt.InvalidKeyError,
-#             jwt.InvalidAlgorithmError
-#     ) as e:
-#         raise fastapi.HTTPException(status_code=fastapi.status.HTTP_401_UNAUTHORIZED, detail=e)
-#
-#     user_login = decoded_token.get('iss')
-#     async_unit_of_work = AsyncSqlAlchemyUnitOfWork(session)
-#
-#     async with async_unit_of_work:
-#         repository = auth_repo.TeacherRepository(session)
-#         user = await repository.get_by_login(user_login)
-#         await repository.update(user.id, {'is_active': True})
