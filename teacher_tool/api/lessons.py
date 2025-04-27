@@ -111,7 +111,7 @@ async def get_units_by_student(
 
     return [
         lesson_schema.UnitForListingResponse(
-            id=unit.id, name=unit.name, gaaginx_idx=unit.gaaging_idx
+            id=unit.id, name=unit.name
         ) for unit in units
     ]
 
@@ -219,21 +219,15 @@ async def create_new_word_into_unit(
         # записываем слово в любом случае
         word_id = await repository.create(body, word_meaning, unit_id)
         unit_words = await repository.list(unit_id)
-        gaaging_idx = UnitParams.calculate_gag_index(unit_words)
-        diversity_idx = UnitParams.calculate_diversity_index(unit_words)
-
-        # Если слово найдено, записываем синонимы
+        #если слово найдено, записываем синонимы
         if word_meta:
             repository = lesson_repo.WordSynonymRepository(session)
             await repository.bulk_create(word_synonyms, word_id)
 
         repository = lesson_repo.UnitRepository(session)
         await repository.update(
-            unit_id,
-            {"gaaging_idx": gaaging_idx, "diversity_idx": diversity_idx}
+            unit_id
         )
-
-    # Возвращаем 404, само слово записано
     if not word_meta:
         return JSONResponse(
             status_code=fastapi.status.HTTP_404_NOT_FOUND,
@@ -266,13 +260,9 @@ async def update_unit_word(
     async with async_unit_of_work:
         repository = lesson_repo.WordRepository(session)
         unit_words = await repository.list(unit_id)
-        gaaging_idx = UnitParams.calculate_gag_index(unit_words)
-        diversity_idx = UnitParams.calculate_diversity_index(unit_words)
-
         repository = lesson_repo.UnitRepository(session)
         await repository.update(
-            unit_id,
-            {'gaaging_idx': gaaging_idx, 'diversity_idx': diversity_idx}
+            unit_id
         )
 
 @lessons_router.delete(
@@ -330,17 +320,11 @@ async def upload_unit_words(
 
 
     async with async_unit_of_work:
-
         repository = lesson_repo.WordRepository(session)
         unit_words = await repository.list(unit_id)
-
-        gaaging_idx = UnitParams.calculate_gag_index(unit_words)
-        diversity_idx = UnitParams.calculate_diversity_index(unit_words)
-
         repository = lesson_repo.UnitRepository(session)
         await repository.update(
-            unit_id,
-            {'gaaging_idx': gaaging_idx, 'diversity_idx': diversity_idx}
+            unit_id
         )
 
 @lessons_router.get(
