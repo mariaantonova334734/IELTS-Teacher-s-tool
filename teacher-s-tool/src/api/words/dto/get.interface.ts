@@ -27,7 +27,7 @@ export interface WordResponse {
     topic: string;
 
     /**
-     * Изучение заверщено?
+     * Изучение завершено?
      */
     is_completed: boolean;
 }
