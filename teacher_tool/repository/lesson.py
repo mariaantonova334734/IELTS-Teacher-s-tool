@@ -9,10 +9,6 @@ from schemas import lesson as lesson_schemas
 
 
 class StudentRepository(AbstractRepository):
-
-    # async def list(self, **kwargs):
-    #     stmt = sa.select(models.Student)
-    #     return (await self.session.execute(stmt)).scalars().all()
     async def list(self, teacher_id: int) -> list[models.Student]:
         stmt = sa.select(models.Student).where(models.Student.teacher_id == teacher_id)
         result = await self.session.execute(stmt)
@@ -22,14 +18,6 @@ class StudentRepository(AbstractRepository):
         body = {key: value for key, value in body.items() if value is not None}
         stmt = sa.update(models.Student).where(models.Student.id == idx).values(**body)
         await self.session.execute(stmt)
-
-    # async def create(self, body: lesson_schemas.CreateStudentRequest) -> None: # без teacher_id
-    #     stmt = sa.insert(models.Student).values(
-    #         fio=body.fio,
-    #         group=body.group,
-    #         is_active=True
-    #     )
-    #     await self.session.execute(stmt)
     async def create(self, body: lesson_schemas.CreateStudentRequest) -> models.Student:
         teacher_id = None
 
@@ -144,23 +132,8 @@ class WordSynonymRepository(AbstractRepository):
         word_synonyms = (await self.session.execute(stmt)).scalars().all()
 
         return word_synonyms
-
-    # Новый метод для удаления синонимов по word_id
+    #для удаления синонимов по word_id
     async def delete_by_word_id(self, word_id: int) -> None:
         stmt = delete(models.WordSynonyms).where(models.WordSynonyms.word_id == word_id)
         await self.session.execute(stmt)
         await self.session.commit()
-
-    # # Новый метод для обновления синонимов по word_id
-    # async def update_bulk(self, word_id: int, new_synonyms: t.List[str]):
-    #     """Обновляет синонимы для слова (удаляет старые и добавляет новые)."""
-    #     async with self.session.begin():
-    #         # Удаляем старые синонимы
-    #         await self.session.execute(
-    #             delete(models.WordSynonyms).where(models.WordSynonyms.word_id == word_id)
-    #         )
-    #
-    #         # Добавляем новые синонимы
-    #         if new_synonyms:
-    #             new_synonyms_objs = [models.WordSynonyms(title=synonym, word_id=word_id) for synonym in new_synonyms]
-    #             self.session.add_all(new_synonyms_objs)
