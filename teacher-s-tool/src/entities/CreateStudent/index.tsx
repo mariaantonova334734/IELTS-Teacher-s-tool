@@ -83,7 +83,7 @@ export default function CreateStudent({ isOpen, onCreateSuccess, createStudent, 
 				autoComplete="off"
 					
 			> 
-				{/**ФИО юзера */}
+				{/**ФИО */}
 				<Form.Item
 					name="fio"
 					label="ФИО"
@@ -94,7 +94,7 @@ export default function CreateStudent({ isOpen, onCreateSuccess, createStudent, 
 						placeholder="ФИО: " />
 				</Form.Item>
 
-				{/** Логин - upd. группа */}
+				{/**Группа студента*/}
 				<Form.Item
 					name="group"
 					label="Группа: "
